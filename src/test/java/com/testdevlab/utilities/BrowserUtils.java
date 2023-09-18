@@ -30,77 +30,35 @@ public class BrowserUtils {
     }
 
     // Method to check if a web element is visible
-    public static boolean isElementVisible(WebElement element, int timeoutInSeconds) {
+    public static boolean isElementVisible(WebElement element, Duration timeout) {
         try {
-            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), timeoutInSeconds);
+            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), timeout);
             wait.until(ExpectedConditions.visibilityOf(element));
             return true; // Element is visible
-        } catch (Exception e) {
-            return false; // Element is not visible
+        } catch (org.openqa.selenium.TimeoutException e) {
+            return false; // Element is not visible within the specified duration
         }
     }
 
-    // Method to long click a web element for a specified duration in seconds
-    public static void longClick(WebElement element, int durationInSeconds) {
-        Actions actions = new Actions(Driver.getDriver());
+    public static void clickAndHoldForDuration(WebDriver driver, long durationInMilliseconds) {
+        // Get the middle of the page
+        int centerX = driver.manage().window().getSize().width / 2;
+        int centerY = driver.manage().window().getSize().height / 2;
 
-        // Click and hold the element
-        actions.clickAndHold(element).build().perform();
-
-        // Use WebDriverWait to wait for the specified duration
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), durationInSeconds);
-
-        // Use a loop to repeatedly check for the element until the duration is reached
-        for (int i = 0; i < durationInSeconds; i++) {
-            wait.until(ExpectedConditions.visibilityOf(element)); // Wait for the element to be visible
-        }
-
-        // Release the mouse button to complete the long click
-        actions.release(element).build().perform();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(getElementAtCoordinates(driver, centerX, centerY))
+                .clickAndHold()
+                .pause(durationInMilliseconds)
+                .release()
+                .perform();
+    }
+    private static WebElement getElementAtCoordinates(WebDriver driver, int x, int y) {
+        return driver.findElement(By.xpath("//html"));
     }
 
-    // Method to switch to an iframe by its index
-    public static void switchToIframeByIndex(int index) {
-        WebDriver driver = Driver.getDriver(); // Assuming you have a Driver class to manage your WebDriver instance
-        driver.switchTo().frame(index);
-    }
-
-    // Method to switch back to the default content
-    public static void switchToDefaultContent() {
-        WebDriver driver = Driver.getDriver(); // Assuming you have a Driver class to manage your WebDriver instance
-        driver.switchTo().defaultContent();
-    }
-
-    public static void safeClick(WebDriver driver, WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, 10); // Adjust the timeout as needed
-
-        try {
-            // Wait for the element to be clickable
-            wait.until(ExpectedConditions.elementToBeClickable(element));
-
-            // Scroll to the element (if needed)
-            Actions actions = new Actions(driver);
-            actions.moveToElement(element).perform();
-
-            // Click the element
-            element.click();
-        } catch (Exception e) {
-            // Handle any exceptions or log the error
-            e.printStackTrace();
-        }
-    }
-
-    public static void disableAllFrames(WebDriver driver) {
+    public static void scrollToElement(WebDriver driver, WebElement element) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-
-        // Find all iframes on the page
-        java.util.List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
-
-        // Disable each iframe by setting the src attribute to an empty string
-        for (WebElement iframe : iframes) {
-            jsExecutor.executeScript("arguments[0].setAttribute('src', '')", iframe);
-        }
+        jsExecutor.executeScript("arguments[0].scrollIntoView(true);", element);
     }
-
 
 }

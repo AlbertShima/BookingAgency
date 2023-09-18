@@ -5,8 +5,13 @@ Feature: Creating an account
     When I enter valid user email
     And click on "Continue_with_email" button
     And I enter valid password
-    And click on "Create_Account" button
-    And main page is opened
-    And I click on "Manage Accounts" button under account menu
-    And I click on "Personal Details" button under manage accounts section
-    Then "Personal Details" page is opened And correct value is prefilled in email verification placeholder
+    And click on "Create_account" button
+
+  @Test2
+    Scenario:
+      Given I am sing in already with email "shimabertitestdevlab@gmail.com"
+      And main page is opened
+      And I click on "Manage Accounts" button under account menu
+      And I click on "Personal Details" button under manage accounts section
+      Then "Personal Details" page is opened And correct value is prefilled in email verification placeholder
+

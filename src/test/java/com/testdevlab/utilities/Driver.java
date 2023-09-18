@@ -47,19 +47,18 @@ public class Driver {
                     System.setProperty("webdriver.chrome.driver", "C:\\Users\\User\\Downloads\\chrome-win64\\chromedriver.exe"); // Specify the path to chromedriver.exe
                     ChromeOptions options = new ChromeOptions();
                     options.setBinary("C:\\Users\\User\\Downloads\\chrome-win64\\chrome.exe"); // Specify the path to the Chrome browser executable
-                    driverPool.set(new ChromeDriver());
-                    driverPool.get().manage().window().maximize();
-                    driverPool.get().manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+                    //WebDriverManager.chromedriver().setup();
+                    driverPool.set(new ChromeDriver(options));
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
                     driverPool.set(new FirefoxDriver());
-                    driverPool.get().manage().window().maximize();
-                    driverPool.get().manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
                     break;
-
-
             }
+            // Common settings for both Chrome and Firefox
+            WebDriver driver = driverPool.get();
+            driver.manage().window().maximize();
+
         }
 
         return driverPool.get();
