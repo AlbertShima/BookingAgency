@@ -3,6 +3,7 @@ package com.testdevlab.utilities;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.concurrent.TimeUnit;
@@ -43,16 +44,18 @@ public class Driver {
             */
             switch (browserType) {
                 case "chrome":
-                    WebDriverManager.chromedriver().setup();
+                    System.setProperty("webdriver.chrome.driver", "C:\\Users\\User\\Downloads\\chrome-win64\\chromedriver.exe"); // Specify the path to chromedriver.exe
+                    ChromeOptions options = new ChromeOptions();
+                    options.setBinary("C:\\Users\\User\\Downloads\\chrome-win64\\chrome.exe"); // Specify the path to the Chrome browser executable
                     driverPool.set(new ChromeDriver());
                     driverPool.get().manage().window().maximize();
-                    driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                    driverPool.get().manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
                     driverPool.set(new FirefoxDriver());
                     driverPool.get().manage().window().maximize();
-                    driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                    driverPool.get().manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
                     break;
 
 
