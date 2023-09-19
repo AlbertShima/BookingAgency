@@ -37,8 +37,11 @@ public class BookingMain_Page {
     @FindBy(id = "airport_taxis")
     public WebElement airportTaxisIcon;
 
-    @FindBy(xpath = "//input[@placeholder=\"Where are you going?\"]")
+    @FindBy(xpath = "//input[@name=\"ss\"]")
     public WebElement destination;
+
+    @FindBy(xpath = "//div[@role=\"button\"]")
+    public WebElement selectDestinationFromDropDown;
 
     @FindBy(xpath = "//div[@data-testid=\"searchbox-dates-container\"]")
     public WebElement dateReservation;
@@ -76,10 +79,21 @@ public class BookingMain_Page {
     @FindBy(id = "hp_book_now_button")
     public WebElement reserve;
 
-    @FindBy(xpath = "aria-describedby=\"materialized_tooltip_gqyvs\"")
-    public WebElement IWillReserve;
+    @FindBy(id = "b_tt_holder_1")
+    public WebElement iWillReserve;
+
+    @FindBy(xpath = "//div[@class=\"notice-item-close-x\"]")
+    public WebElement removeFinishYourBooking;
 
     @FindBy(xpath = "//span[@class=\"bui-button__text js-button__text\"]")
     public WebElement finalDetails;
+
+    @FindBy(xpath = "//button[@data-testid=\"date-display-field-start\"]/span")
+    public WebElement gettingStartingDate;
+
+    @FindBy(xpath = "//button[@data-testid=\"date-display-field-end\"]/span")
+    public WebElement gettingEndingDate;
+
+
 
 }

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class BrowserUtils {
     //Here I will put all the methods tht I am going to use
@@ -76,5 +77,40 @@ public class BrowserUtils {
         String script = "arguments[0].setAttribute(arguments[1], arguments[2]);";
         jsExecutor.executeScript(script, element, attributeName, newValue);
     }
+
+    public static String removeExtraSpaces(String input) {
+        // Define a regular expression pattern to match multiple spaces
+        Pattern pattern = Pattern.compile("\\s+");
+
+        // Use the pattern to split the input string into words
+        String[] words = pattern.split(input);
+
+        // Join the words back together with a single space between them
+        String result = String.join(" ", words);
+
+        return result;
+    }
+
+    public static String formatDateString(String input) {
+        // Split the input string by spaces
+        String[] words = input.split(" ");
+
+        if (words.length >= 3) {
+            // Extract the first three letters from the first word
+            String firstWord = words[0].substring(0, Math.min(words[0].length(), 3));
+
+            // Extract the first three letters from the third word
+            String thirdWord = words[2].substring(0, Math.min(words[2].length(), 3));
+
+            // Build the formatted result
+            String result = firstWord + " " + words[1] + " " + thirdWord + " " + words[3];
+
+            return result;
+        } else {
+            // If there are not enough words in the input, return the original string
+            return input;
+        }
+    }
+
 
 }

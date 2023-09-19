@@ -17,10 +17,13 @@ import java.time.Duration;
 
 public class BookingMain_step_definition {
     Duration timeout = Duration.ofSeconds(6);
-    String currentWindowHandle ="";
+    String currentWindowHandle = "";
     String currentWindow1 = "";
     Account_Creation_Page account_creation_page = new Account_Creation_Page();
     BookingMain_Page bookingMain_page = new BookingMain_Page();
+    String destinationAsText = "";
+    String datesAsText = "";
+    String adultsAndChildrenAsText = "";
 
     @Given("I have account created")
     public void i_have_account_created() {
@@ -60,9 +63,8 @@ public class BookingMain_step_definition {
 
     @And("I am in {string} page")
     public void iAmInPage(String icon) {
-
-        // BrowserUtils.isElementVisible(bookingMain_page.staysIcon, timeout);
-        // Assert.assertTrue(bookingMain_page.staysIcon.isSelected());
+        BrowserUtils.isElementVisible(bookingMain_page.staysIcon, timeout);
+        Assert.assertTrue(bookingMain_page.staysIcon.isDisplayed());
 /*
         switch (icon.toLowerCase()) {
 
@@ -95,6 +97,11 @@ public class BookingMain_step_definition {
         if (BrowserUtils.isElementVisible(bookingMain_page.destination, timeout)) {
             bookingMain_page.destination.click();
             bookingMain_page.destination.sendKeys(destination);
+            if (bookingMain_page.selectDestinationFromDropDown.getText().equals(destination)) {
+                bookingMain_page.selectDestinationFromDropDown.click();
+            }
+            destinationAsText = bookingMain_page.destination.getAttribute("value");
+            System.out.println("destinationAsText = " + destinationAsText);             //Delete this
         }
 
     }
@@ -105,7 +112,7 @@ public class BookingMain_step_definition {
         bookingMain_page.dateReservation.click();
         String start = BrowserUtils.modifyAndReturn(startingDate);
         String end = BrowserUtils.modifyAndReturn(endingDate);
-        
+
         WebElement startDate = Driver.getDriver().findElement(By.xpath(start));
         BrowserUtils.scrollToElement(Driver.getDriver(), startDate);
         startDate.click();
@@ -114,7 +121,8 @@ public class BookingMain_step_definition {
 
         endDate.click();
 
-
+        datesAsText = BrowserUtils.removeExtraSpaces(bookingMain_page.dateReservation.getText());
+        System.out.println("datesAsText = " + datesAsText);                                 //Delete this
 
     }
 
@@ -137,6 +145,8 @@ public class BookingMain_step_definition {
         bookingMain_page.done.click();
 
          */
+        adultsAndChildrenAsText = bookingMain_page.adultsAndChildren.getText();
+        System.out.println("adultsAndChildrenAsText = " + adultsAndChildrenAsText);         //Delete this
 
     }
 
@@ -150,9 +160,14 @@ public class BookingMain_step_definition {
                 break;
             case "reserve":
                 bookingMain_page.reserve.click();
+                BrowserUtils.isElementVisible(bookingMain_page.iWillReserve, timeout);
                 break;
             case "i'll reserve":
-                bookingMain_page.IWillReserve.click();
+                if(BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)){
+                    bookingMain_page.removeFinishYourBooking.click();
+                }
+
+                bookingMain_page.iWillReserve.click();
                 break;
             case "next: final details":
                 bookingMain_page.finalDetails.click();
@@ -166,7 +181,7 @@ public class BookingMain_step_definition {
 
     @And("I click on {string} for fist hotel in the list")
     public void iClickOnForFistHotelInTheList(String seeAvailability) {
-        currentWindowHandle= Driver.getDriver().getWindowHandle();
+        currentWindowHandle = Driver.getDriver().getWindowHandle();
         bookingMain_page.seeAvailability.click();
     }
 
@@ -176,6 +191,10 @@ public class BookingMain_step_definition {
         BrowserUtils.switchToWindowByTitle(Driver.getDriver(), currentWindow1);
         Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains("hotel"));
         Assert.assertTrue(bookingMain_page.hotelName.isDisplayed());
+        Assert.assertEquals(bookingMain_page.destination.getText(),destinationAsText );
+        String actualDate = bookingMain_page.gettingStartingDate+" — "+bookingMain_page.gettingEndingDate;
+        System.out.println("actualDate = " + actualDate);
+
     }
 
 
