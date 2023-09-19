@@ -52,7 +52,6 @@ public class Driver {
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
                     FirefoxOptions option = new FirefoxOptions();
-                    option.setCapability("sandbox", true);
                     driverPool.set(new FirefoxDriver(option));
                     break;
             }

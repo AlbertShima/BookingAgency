@@ -1,19 +1,19 @@
 package com.testdevlab.utilities;
 
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Set;
 
 public class BrowserUtils {
     //Here I will put all the methods tht I am going to use
     //I will not use .sleep() method.
+
     /**
      * This method will accept int (in seconds) and execute Thread.sleep()
      * for given duration
@@ -40,25 +40,41 @@ public class BrowserUtils {
         }
     }
 
-    public static void clickAndHoldForDuration(WebDriver driver, long durationInMilliseconds) {
-        // Get the middle of the page
-        int centerX = driver.manage().window().getSize().width / 2;
-        int centerY = driver.manage().window().getSize().height / 2;
-
-        Actions actions = new Actions(driver);
-        actions.moveToElement(getElementAtCoordinates(driver, centerX, centerY))
-                .clickAndHold()
-                .pause(durationInMilliseconds)
-                .release()
-                .perform();
-    }
-    private static WebElement getElementAtCoordinates(WebDriver driver, int x, int y) {
-        return driver.findElement(By.xpath("//html"));
-    }
 
     public static void scrollToElement(WebDriver driver, WebElement element) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         jsExecutor.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public static void switchToWindowByTitle(WebDriver driver, String targetWindowTitle) {
+        Set<String> windowHandles = driver.getWindowHandles();
+
+        for (String windowHandle : windowHandles) {
+            driver.switchTo().window(windowHandle);
+            String windowTitle = driver.getTitle();
+
+            if (windowTitle.equals(targetWindowTitle)) {
+                return; // Found the target window, no need to continue searching
+            }
+        }
+    }
+    public static String modifyAndReturn(String input) {
+        // Make changes to the input string
+        String dayStart = input.substring(0, 2);
+        String monthStart = input.substring(3, 5);
+        String yearStart = input.substring(6);
+
+        // Create the modified string
+        String modifiedString = "//span[@data-date=\"" + yearStart + "-" + monthStart + "-" + dayStart + "\"]";
+
+        // Return the modified string
+        return modifiedString;
+    }
+
+    public static void changeAttributeValue(WebDriver driver, WebElement element, String attributeName, String newValue) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        String script = "arguments[0].setAttribute(arguments[1], arguments[2]);";
+        jsExecutor.executeScript(script, element, attributeName, newValue);
     }
 
 }
