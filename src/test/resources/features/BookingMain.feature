@@ -1,9 +1,9 @@
 Feature:
-
-  Scenario: Book first displayed hotel
+  @bookingFirstHotel
+  Scenario Outline: Book first displayed hotel
     Given I have account created
     And I am in "Home" page
-    When I set up destination as "Tirana"
+    When I set up destination as "Rome"
     And I set dates "30-09-2023" - "20-10-2023"
     And I select "3" adults and "0" children
     And I click on "Search" button
@@ -18,10 +18,13 @@ Feature:
       # verify that dates are correct, check if price matches the price in details page,
       # reservation time counter is decreasing, check other information based on previous
       # inputs (amount of adults, etc.)
-    And I enter valid booking information
+    And I enter valid booking information "<firstName>", "<lastName>", "<email>", "<description>"
     And I click on "Next: Final Details" button
     And "Final Details" page is displayed
 
+    Examples:
+      | firstName | lastName | email                          | description                                                    |
+      | Albert    | Shima    | shimabertitestdevlab@gmail.com | Hello Tomas and Ilia. I would like to be part of your team. :) |
 
 
   Scenario: Book cheapest hotel in city

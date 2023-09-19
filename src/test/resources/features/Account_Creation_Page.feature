@@ -7,6 +7,8 @@ Feature: Creating new account
     And click on "Continue with email" button
     And I enter valid password
     And click on "Create account" button
+    #I am failing to create new account because website is secure
+    #Other Steps are implemented correctly
     And main page is opened
     And click on "Manage Accounts" button
     And click on "Personal Details" button

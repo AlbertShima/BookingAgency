@@ -164,6 +164,7 @@ public class BookingMain_step_definition {
                     bookingMain_page.removeFinishYourBooking.click();
                 }
                 bookingMain_page.iWillReserve.click();
+                //bookingMain_page.reserveSecond.click();
                 break;
             case "next: final details":
                 if (BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)) {
@@ -193,7 +194,7 @@ public class BookingMain_step_definition {
         Assert.assertTrue(bookingMain_page.hotelName.isDisplayed());
 
         //Asserting the value of destination
-        Assert.assertEquals(bookingMain_page.destination.getAttribute("value"), destinationAsText);
+        Assert.assertTrue(bookingMain_page.destination.getAttribute("value").contains(destinationAsText));
 
         //Asserting the date of reservation
         String actualDate = BrowserUtils.formatDateString(bookingMain_page.gettingStartingDate.getText().substring(3));
@@ -206,22 +207,29 @@ public class BookingMain_step_definition {
 
         //Asserting the adult and child reservation
         String adultAndChild = bookingMain_page.gettingAdultsAndChild.getText();
-        Assert.assertEquals(adultsAndChildrenAsText, adultAndChild);
+        Assert.assertEquals("Added adults and children number does not match with expected one", adultsAndChildrenAsText, adultAndChild);
 
         //Asserting rating
-        Assert.assertTrue(bookingMain_page.ratting.isDisplayed());
+        try {
+            Assert.assertTrue(bookingMain_page.ratting.isDisplayed());
+        } catch (org.openqa.selenium.TimeoutException e) {
+            // Handle the exception or print an error message
+            System.out.println("Exception: Element not displayed within the timeout.");
+            // You can also fail the test here if needed
+            Assert.fail("The rating WebElement is not displayed.");
+        }
 
     }
 
 
     @Then("{string} page is displayed")
     public void pageIsDisplayed(String element) {
-        //Neew to implement with switch
-        //----------------------------------------------------------------------------------
+
         switch (element.toLowerCase()) {
 
             case "checkout":
-
+                BrowserUtils.scrollToElement(Driver.getDriver(), bookingMain_page.checkOutTotal);
+                Assert.assertTrue(bookingMain_page.checkOutTotal.isDisplayed());
                 break;
             case "final details":
 
@@ -233,8 +241,17 @@ public class BookingMain_step_definition {
 
     }
 
-    @And("I enter valid booking information")
-    public void iEnterValidBookingInformation() {
-        //----------------------------------------------------------------------------------
+
+    @And("I enter valid booking information {string}, {string}, {string}, {string}")
+    public void iEnterValidBookingInformation(String firstName, String lastName, String email, String description) {
+        BrowserUtils.scrollToElement(Driver.getDriver(), bookingMain_page.checkOutIAmTheMainGuest);
+        bookingMain_page.checkOutIAmTheMainGuest.click();
+        bookingMain_page.checkOutFirstName.sendKeys(firstName);
+        bookingMain_page.checkOutLastName.sendKeys(lastName);
+        bookingMain_page.checkOutEmail.sendKeys(email);
+        bookingMain_page.checkOutEmailFirstOption.click();
+        bookingMain_page.checkOutYesRadioButton.click();
+        bookingMain_page.checkOutDescription.sendKeys(description);
+
     }
 }

@@ -8,12 +8,17 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
+import java.util.List;
 
 public class Account_Creation_Page_step_definition {
     Account_Creation_Page account_creation_page = new Account_Creation_Page();
     Duration timeout = Duration.ofSeconds(5);
+    Actions actions = new Actions(Driver.getDriver());
 
     @Given("I am in a Sign Up page")
     public void I_am_in_a_Sign_Up_page() {
@@ -36,13 +41,15 @@ public class Account_Creation_Page_step_definition {
     //The method below is for clicking a web element
     @Then("click on {string} button")
     public void user_click_on_button(String webElement) {
+
         switch (webElement.toLowerCase()) {
 
             case "continue with email":
                 account_creation_page.continueWithEmail.click();
                 break;
             case "create account":
-                account_creation_page.createAccount.click();
+                actions.click(account_creation_page.createAccount).perform();
+                //account_creation_page.createAccount.click();
                 break;
             case "signin with verification link":
                 account_creation_page.signInWithAVerificationLink.click();
@@ -73,6 +80,7 @@ public class Account_Creation_Page_step_definition {
 
     @And("main page is opened")
     public void mainPageIsOpened() {
+        actions.clickAndHold(account_creation_page.pressAndHold).perform();
         //I am proofing that the logo for the account is displayed after log-in
         Assert.assertTrue(account_creation_page.profileMenuTriggerTitleYour.isDisplayed());
     }

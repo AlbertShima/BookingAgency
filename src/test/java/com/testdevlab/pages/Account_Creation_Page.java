@@ -49,4 +49,7 @@ public class Account_Creation_Page {
     @FindBy(xpath = "//div[@class=\"HkzQyP3VFWJ3FPcwZbMw\"]")
     public WebElement getEmailFromPersonalDetails;
 
+    @FindBy(xpath = "//span[text()=\"Press and hold this button to pass the security check\"]")
+    public WebElement pressAndHold;
+
 }

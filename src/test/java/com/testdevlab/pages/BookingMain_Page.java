@@ -78,8 +78,11 @@ public class BookingMain_Page {
     @FindBy(id = "hp_book_now_button")
     public WebElement reserve;
 
-    @FindBy(id = "b_tt_holder_1")
+    @FindBy(xpath = "//div[@class=\"hprt-reservation-cta\"]/button")
     public WebElement iWillReserve;
+
+    @FindBy(xpath = "//button[@aria-description=\"Reserve this apartment now\"]")
+    public WebElement reserveSecond;
 
     @FindBy(xpath = "//div[@class=\"notice-item-close-x\"]")
     public WebElement removeFinishYourBooking;
@@ -101,6 +104,44 @@ public class BookingMain_Page {
 
     @FindBy(xpath = "//div[@class=\"bp-price-details__total-price\"]")
     public WebElement checkOutTotal;
+
+
+    @FindBy(xpath = "//span[@class=\"bui-radio__label\"]")
+    public WebElement checkOutYesRadioButton;
+
+    @FindBy(xpath = "//input[@id=\"bp_travel_purpose_leasure\"]")
+    public WebElement checkOutNoRadioButton;
+
+    @FindBy(id = "firstname")
+    public WebElement checkOutFirstName;
+
+    @FindBy(id = "lastname")
+    public WebElement checkOutLastName;
+
+    @FindBy(id = "email")
+    public WebElement checkOutEmail;
+
+    @FindBy(xpath = "//li[@role=\"option\"]")
+    public WebElement checkOutEmailFirstOption;
+
+    @FindBy(id = "notstayer_false")
+    public WebElement checkOutIAmTheMainGuest;
+
+    @FindBy(id = "remarks")
+    public WebElement checkOutDescription;
+
+
+
+    @FindBy(id = "notstayer_true")
+    public WebElement checkOutImBookingForSomeoneElse;
+
+
+
+
+
+
+
+
 
 
 }
