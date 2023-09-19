@@ -12,7 +12,7 @@ public class Account_Creation_Page {
 
     //Here will be listed all the locators
     @FindBy(xpath = "//div[@class=\"dd5dccd82f\"]//button[@type=\"button\"]")
-    public WebElement cancelButton;
+    public WebElement cancelButton; //Pop up dialog box which appears at the beginning
     @FindBy(xpath = "//a[@aria-label=\"Create an account\"]")
     public WebElement register;
 
@@ -23,38 +23,30 @@ public class Account_Creation_Page {
     public WebElement continueWithEmail;
 
     @FindBy(id = "new_password")
-    public WebElement newPassword;
-
-    @FindBy(id = "password")
-    public WebElement password;
+    public WebElement newPassword;      //New password for creating new account
 
     @FindBy(id = "confirmed_password")
-    public WebElement passwordConfirm;
+    public WebElement passwordConfirm;  //Confirm password for new account
 
     @FindBy(xpath = "//button[@type=\"submit\"]")
-    public WebElement createAccount;
+    public WebElement createAccount;    //Create account for new user
+
+    @FindBy(id = "password")
+    public WebElement password;         //Password for an already created account
 
     @FindBy(xpath = "//span[text()=\"Sign in with a verification link\"]/..")
     public WebElement signInWithAVerificationLink;
 
-    @FindBy(xpath = "//button[@data-testid=\"header-language-picker-trigger\"]")
-    public WebElement backToSignIn;
+    @FindBy(xpath = "//nav[@class=\"c20fd9b542\"]//div[@class=\"a3332d346a a6a383700c\"]")
+    public WebElement profileMenuTriggerTitleYour; //Profile Menu at the right top
 
-    @FindBy(xpath = "//input[@type=\"email\"]")
-    public WebElement emailOnGmail;
+    @FindBy(xpath = "//*[text()=\"Manage account\"]")
+    public WebElement manageAccount;
 
-    @FindBy(xpath = "//input[@type=\"password\"]")
-    public WebElement passwordOnGmail;
+    @FindBy(xpath = "//*[text()=\"Personal details\"]")
+    public WebElement personalDetails;
 
-    @FindBy(xpath = "//*[text()=\"Next\"]")
-    public WebElement nextOnGmail;
+    @FindBy(xpath = "//div[@class=\"HkzQyP3VFWJ3FPcwZbMw\"]")
+    public WebElement getEmailFromPersonalDetails;
 
-    @FindBy(xpath = "(//*[text()=\"Your verification link\"])[2]")
-    public WebElement verificationLinkOnGmail;
-
-    @FindBy(xpath = "")
-    public WebElement verifyMeOnGmail;
-
-    @FindBy(xpath = "//*[@data-tooltip=\"Show trimmed content\"]")
-    public WebElement threeDotsOnGmail;
 }

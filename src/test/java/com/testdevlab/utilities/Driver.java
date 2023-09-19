@@ -5,14 +5,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class Driver {
-       /*
-       Creating a private constructor, so we are closing
-       access to the object of this class from outside the class
-        */
+    /*
+    Creating a private constructor, so we are closing
+    access to the object of this class from outside the class
+     */
     private Driver() {
     }
 
@@ -52,7 +51,9 @@ public class Driver {
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driverPool.set(new FirefoxDriver());
+                    FirefoxOptions option = new FirefoxOptions();
+                    option.setCapability("sandbox", true);
+                    driverPool.set(new FirefoxDriver(option));
                     break;
             }
             // Common settings for both Chrome and Firefox

@@ -18,6 +18,8 @@ public class Account_Creation_Page_step_definition {
     @Given("I am in a Sign Up page")
     public void I_am_in_a_Sign_Up_page() {
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
+
+        //If we have the pop-up we will cancel that
         if (BrowserUtils.isElementVisible(account_creation_page.cancelButton, timeout)) {
             account_creation_page.cancelButton.click();
         } else if (BrowserUtils.isElementVisible(account_creation_page.cancelButton, timeout)) {
@@ -26,32 +28,41 @@ public class Account_Creation_Page_step_definition {
         account_creation_page.register.click();
     }
 
+    @Then("I enter valid user email")
+    public void I_enter_valid_user_email() {
+        account_creation_page.emailAddress.sendKeys(ConfigurationReader.getProperty("email"));
+    }
+
     //The method below is for clicking a web element
     @Then("click on {string} button")
     public void user_click_on_button(String webElement) {
         switch (webElement.toLowerCase()) {
 
-            case "continue_with_email":
+            case "continue with email":
                 account_creation_page.continueWithEmail.click();
                 break;
-            case "create_account":
+            case "create account":
                 account_creation_page.createAccount.click();
                 break;
-            case "signin_with_verification_link":
+            case "signin with verification link":
                 account_creation_page.signInWithAVerificationLink.click();
+                break;
+            case "manage accounts":
+                account_creation_page.profileMenuTriggerTitleYour.click();
+                account_creation_page.manageAccount.click();
+                break;
+            case "personal details":
+                account_creation_page.personalDetails.click();
                 break;
             default:
                 throw new IllegalArgumentException("Unknown element: " + webElement);
         }
     }
 
-    @Then("I enter valid user email")
-    public void I_enter_valid_user_email() {
-        account_creation_page.emailAddress.sendKeys(ConfigurationReader.getProperty("email"));
-    }
-
     @Then("I enter valid password")
     public void I_enter_valid_password() {
+        //Here I am checking if the email is already registered than we have one
+        //box for password otherwise we have two, newPassword and confirmPassword
         if (BrowserUtils.isElementVisible(account_creation_page.password, timeout)) {
             account_creation_page.password.sendKeys(ConfigurationReader.getProperty("password"));
         } else {
@@ -60,42 +71,28 @@ public class Account_Creation_Page_step_definition {
         }
     }
 
-
     @And("main page is opened")
     public void mainPageIsOpened() {
+        //I am proofing that the logo for the account is displayed after log-in
+        Assert.assertTrue(account_creation_page.profileMenuTriggerTitleYour.isDisplayed());
+    }
 
-        Driver.getDriver().get(ConfigurationReader.getProperty("gmail"));
-        account_creation_page.emailOnGmail.sendKeys(ConfigurationReader.getProperty("email"));
-        account_creation_page.nextOnGmail.click();
-        BrowserUtils.isElementVisible(account_creation_page.passwordOnGmail, timeout);
-        account_creation_page.passwordOnGmail.sendKeys(ConfigurationReader.getProperty("password"));
-        account_creation_page.nextOnGmail.click();
-        BrowserUtils.isElementVisible(account_creation_page.verificationLinkOnGmail, timeout);
-        account_creation_page.verificationLinkOnGmail.click();
-        BrowserUtils.scrollToElement(Driver.getDriver(), account_creation_page.verifyMeOnGmail);
-        account_creation_page.verifyMeOnGmail.click();
-
-
+    @Then("{string} page is opened")
+    public void pageIsOpened(String personalDetailPage) {
+        //Storing as an array of strings each word
+        String[] words = personalDetailPage.toLowerCase().split("\\s+");
+        //Getting the url
+        String actualURL = Driver.getDriver().getCurrentUrl();
+        Assert.assertTrue(actualURL.contains(words[0]));
 
     }
 
-
-    @And("I click on {string} button under account menu")
-    public void iClickOnButtonUnderAccountMenu(String arg0) {
-    }
-
-    @And("I click on {string} button under manage accounts section")
-    public void iClickOnButtonUnderManageAccountsSection(String arg0) {
-
+    @And("correct value is prefilled in email verification placeholder")
+    public void correctValueIsPrefilledInEmailVerificationPlaceholder() {
+        String expectedEmail = ConfigurationReader.getProperty("email");
+        String actualEmail = account_creation_page.getEmailFromPersonalDetails.getText();
+        Assert.assertEquals(expectedEmail, actualEmail);
     }
 
 
-    @Then("{string} page is opened And correct value is prefilled in email verification placeholder")
-    public void pageIsOpenedAndCorrectValueIsPrefilledInEmailVerificationPlaceholder(String arg0) {
-    }
-
-    @Given("I am sing in already with email {string}")
-    public void iAmSingInAlreadyWithEmail(String email) {
-        Driver.getDriver().get(ConfigurationReader.getProperty("logInUrl"));
-    }
 }
