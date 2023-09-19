@@ -11,7 +11,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
 
@@ -21,6 +23,7 @@ public class BookingMain_step_definition {
     String currentWindow1 = "";
     Account_Creation_Page account_creation_page = new Account_Creation_Page();
     BookingMain_Page bookingMain_page = new BookingMain_Page();
+
     String destinationAsText = "";
     String datesAsText = "";
     String adultsAndChildrenAsText = "";
@@ -124,26 +127,38 @@ public class BookingMain_step_definition {
 
     }
 
-    @And("I select {string} adults and {string} children")
-    public void iSelectAdultsAndChildren(String adults, String children) {
-        //ISSUE I tried to change attribute value, but it did not work
-        /*
+    @And("I select {int} adults and {int} children")
+    public void iSelectAdultsAndChildren(int adults, int children) {
         bookingMain_page.adultsAndChildren.click();
-
-        int adult = Integer.parseInt(adults);
-        int child = Integer.parseInt(children);
-        if(adult>0){
-            BrowserUtils.changeAttributeValue(Driver.getDriver(), bookingMain_page.adults, "aria-valuenow", adults);
+        int numberOfClicking = adults - 2;
+        if (numberOfClicking > 0) {
+            for (int i = 0; i < numberOfClicking; i++) {
+                bookingMain_page.adultsPlusButton.click();
+            }
+        } else if (numberOfClicking < 0) {
+            for (int i = 0; i < Math.abs(numberOfClicking); i++) {
+                bookingMain_page.adultsMinusButton.click();
+            }
         }
-        if (child == 1) {
-            BrowserUtils.changeAttributeValue(Driver.getDriver(), bookingMain_page.children, "aria-valuenow", children);
-            Select select = new Select(bookingMain_page.selectAgeForChildren);
-            select.selectByIndex(2);
-        }
-        bookingMain_page.done.click();
 
-         */
+        if (children > 0) {
+            for (int i = 0, j = 3; i < children; i++, j++) {
+                bookingMain_page.childrenPlusButton.click();
+                Select select = new Select(bookingMain_page.selectAgeForChildren);
+                select.selectByIndex(j);
+            }
+        }
+        int people = adults + children;
+        int loop = people / 2 - 1;
+        bookingMain_page.adultsAndChildren.click();
+        if (people > 3) {
+            for (int i = 0; i < loop; i++) {
+                JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver.getDriver();
+                jsExecutor.executeScript("arguments[0].click();", bookingMain_page.roomPlusButton);
+            }
+        }
         adultsAndChildrenAsText = bookingMain_page.adultsAndChildren.getText();
+
 
     }
 
@@ -163,8 +178,9 @@ public class BookingMain_step_definition {
                 if (BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)) {
                     bookingMain_page.removeFinishYourBooking.click();
                 }
+                Select select = new Select(bookingMain_page.iWillReserveAmount);
+                select.selectByIndex(1);
                 bookingMain_page.iWillReserve.click();
-                //bookingMain_page.reserveSecond.click();
                 break;
             case "next: final details":
                 if (BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)) {
@@ -244,12 +260,15 @@ public class BookingMain_step_definition {
 
     @And("I enter valid booking information {string}, {string}, {string}, {string}")
     public void iEnterValidBookingInformation(String firstName, String lastName, String email, String description) {
-        BrowserUtils.scrollToElement(Driver.getDriver(), bookingMain_page.checkOutIAmTheMainGuest);
-        bookingMain_page.checkOutIAmTheMainGuest.click();
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver.getDriver();
+        jsExecutor.executeScript("window.scrollTo(0, 0);");
+
+        //bookingMain_page.checkOutIAmTheMainGuest.click();
         bookingMain_page.checkOutFirstName.sendKeys(firstName);
         bookingMain_page.checkOutLastName.sendKeys(lastName);
         bookingMain_page.checkOutEmail.sendKeys(email);
         bookingMain_page.checkOutEmailFirstOption.click();
+        BrowserUtils.scrollToElement(Driver.getDriver(), bookingMain_page.checkOutDescription);
         bookingMain_page.checkOutYesRadioButton.click();
         bookingMain_page.checkOutDescription.sendKeys(description);
 

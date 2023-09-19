@@ -57,14 +57,29 @@ public class BookingMain_Page {
     @FindBy(id = "group_adults")
     public WebElement adults;
 
-    @FindBy(id = "group_children")
-    public WebElement children;
+    @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 e91c91fa93\"])[1]")
+    public WebElement adultsMinusButton;
+
+    @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 e91c91fa93\"])[2]")
+    public WebElement childrenMinusButton;
+    @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 f4d78af12a\"])[1]")
+    public WebElement adultsPlusButton;
+
+    @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 f4d78af12a\"])[2]")
+    public WebElement childrenPlusButton;
+
+    @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 f4d78af12a\"])[3]")
+    public WebElement roomPlusButton;
+
+    @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 e91c91fa93\"])[3]")
+    public WebElement roomMinusButton;
+
+
+    @FindBy(xpath = "//select[@name=\"age\"]")
+    public WebElement childrenAgeSelect;
 
     @FindBy(xpath = "//select[@name=\"age\"]")
     public WebElement selectAgeForChildren;
-
-    @FindBy(xpath = "//button[@class=\"a83ed08757 c21c56c305 bf0537ecb5 ab98298258 d2529514af af7297d90d d285d0ebe9\"]")
-    public WebElement done;
 
     @FindBy(xpath = "//button[@class=\"a83ed08757 c21c56c305 a4c1805887 f671049264 d2529514af c082d89982 aa11d0d5cd\"]")
     public WebElement search;
@@ -81,8 +96,8 @@ public class BookingMain_Page {
     @FindBy(xpath = "//div[@class=\"hprt-reservation-cta\"]/button")
     public WebElement iWillReserve;
 
-    @FindBy(xpath = "//button[@aria-description=\"Reserve this apartment now\"]")
-    public WebElement reserveSecond;
+    @FindBy(id = "hprt_nos_select_157343803_88492392_2_1_0")
+    public WebElement iWillReserveAmount;
 
     @FindBy(xpath = "//div[@class=\"notice-item-close-x\"]")
     public WebElement removeFinishYourBooking;
@@ -121,19 +136,19 @@ public class BookingMain_Page {
     @FindBy(id = "email")
     public WebElement checkOutEmail;
 
-    @FindBy(xpath = "//li[@role=\"option\"]")
+    @FindBy(xpath = "(//li[@role=\"option\"])[1]")
     public WebElement checkOutEmailFirstOption;
 
     @FindBy(id = "notstayer_false")
     public WebElement checkOutIAmTheMainGuest;
 
+    @FindBy(id = "notstayer_true")
+    public WebElement checkOutImBookingForSomeoneElse;
+
     @FindBy(id = "remarks")
     public WebElement checkOutDescription;
 
 
-
-    @FindBy(id = "notstayer_true")
-    public WebElement checkOutImBookingForSomeoneElse;
 
 
 

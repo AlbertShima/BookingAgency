@@ -35,9 +35,9 @@ public class BrowserUtils {
         try {
             WebDriverWait wait = new WebDriverWait(Driver.getDriver(), timeout);
             wait.until(ExpectedConditions.visibilityOf(element));
-            return true; // Element is visible
+            return true;
         } catch (org.openqa.selenium.TimeoutException e) {
-            return false; // Element is not visible within the specified duration
+            return false;
         }
     }
 
@@ -55,7 +55,7 @@ public class BrowserUtils {
             String windowTitle = driver.getTitle();
 
             if (windowTitle.equals(targetWindowTitle)) {
-                return; // Found the target window, no need to continue searching
+                return;
             }
         }
     }
@@ -65,10 +65,7 @@ public class BrowserUtils {
         String monthStart = input.substring(3, 5);
         String yearStart = input.substring(6);
 
-        // Create the modified string
         String modifiedString = "//span[@data-date=\"" + yearStart + "-" + monthStart + "-" + dayStart + "\"]";
-
-        // Return the modified string
         return modifiedString;
     }
 
@@ -79,35 +76,20 @@ public class BrowserUtils {
     }
 
     public static String removeExtraSpaces(String input) {
-        // Define a regular expression pattern to match multiple spaces
         Pattern pattern = Pattern.compile("\\s+");
-
-        // Use the pattern to split the input string into words
         String[] words = pattern.split(input);
-
-        // Join the words back together with a single space between them
         String result = String.join(" ", words);
-
         return result;
     }
 
     public static String formatDateString(String input) {
-        // Split the input string by spaces
         String[] words = input.split(" ");
-
         if (words.length >= 3) {
-            // Extract the first three letters from the first word
             String firstWord = words[0].substring(0, Math.min(words[0].length(), 3));
-
-            // Extract the first three letters from the third word
             String thirdWord = words[2].substring(0, Math.min(words[2].length(), 3));
-
-            // Build the formatted result
             String result = firstWord + " " + words[1] + " " + thirdWord + " " + words[3];
-
             return result;
         } else {
-            // If there are not enough words in the input, return the original string
             return input;
         }
     }
