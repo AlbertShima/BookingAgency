@@ -7,6 +7,7 @@ import com.testdevlab.utilities.ConfigurationReader;
 import com.testdevlab.utilities.Driver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -31,6 +32,9 @@ public class LanguageAndCurrency_step_definition {
         String lang = languageAndCurrency_page.createXPathLocatorWithText(language);
         WebElement languageLocator = Driver.getDriver().findElement(By.xpath(lang));
         languageLocator.click();
+        //Assertion
+        String actualLanguage = languageAndCurrency_page.language.getAttribute("aria-label");
+        Assert.assertTrue(actualLanguage.contains(language));
 
     }
 
@@ -41,6 +45,10 @@ public class LanguageAndCurrency_step_definition {
         String curr = languageAndCurrency_page.createXPathLocatorWithText(currency);
         WebElement currencyLocator = Driver.getDriver().findElement(By.xpath(curr));
         currencyLocator.click();
+
+        //Assertion
+        String actualCurrency = languageAndCurrency_page.currency.getAttribute("aria-label");
+        Assert.assertTrue(actualCurrency.contains(currency));
 
     }
 }
