@@ -75,7 +75,6 @@ public class BookingMain_Page {
     @FindBy(xpath = "//h2[@class=\"d2fee87262 pp-header__title\"]")
     public WebElement hotelName;
 
-
     @FindBy(id = "hp_book_now_button")
     public WebElement reserve;
 
@@ -88,12 +87,20 @@ public class BookingMain_Page {
     @FindBy(xpath = "//span[@class=\"bui-button__text js-button__text\"]")
     public WebElement finalDetails;
 
-    @FindBy(xpath = "//button[@data-testid=\"date-display-field-start\"]/span")
+    @FindBy(xpath = "//div[@data-testid=\"searchbox-checkin-container\"]")
     public WebElement gettingStartingDate;
 
-    @FindBy(xpath = "//button[@data-testid=\"date-display-field-end\"]/span")
+    @FindBy(xpath = "//div[@data-testid=\"searchbox-checkout-container\"]")
     public WebElement gettingEndingDate;
 
+    @FindBy(xpath = "(//button[@data-testid=\"occupancy-config\"])[1]")
+    public WebElement gettingAdultsAndChild;
+
+    @FindBy(xpath = "//span[@class=\"f419a93f12 c7b191f510\"]")
+    public WebElement ratting;
+
+    @FindBy(xpath = "//div[@class=\"bp-price-details__total-price\"]")
+    public WebElement checkOutTotal;
 
 
 }

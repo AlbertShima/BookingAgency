@@ -92,7 +92,7 @@ public class BookingMain_step_definition {
     }
 
     @When("I set up destination as {string}")
-    public void iSetUpDestinationAs(String destination) {                                                               //This method works fine
+    public void iSetUpDestinationAs(String destination) {
 
         if (BrowserUtils.isElementVisible(bookingMain_page.destination, timeout)) {
             bookingMain_page.destination.click();
@@ -101,7 +101,6 @@ public class BookingMain_step_definition {
                 bookingMain_page.selectDestinationFromDropDown.click();
             }
             destinationAsText = bookingMain_page.destination.getAttribute("value");
-            System.out.println("destinationAsText = " + destinationAsText);             //Delete this
         }
 
     }
@@ -122,7 +121,6 @@ public class BookingMain_step_definition {
         endDate.click();
 
         datesAsText = BrowserUtils.removeExtraSpaces(bookingMain_page.dateReservation.getText());
-        System.out.println("datesAsText = " + datesAsText);                                 //Delete this
 
     }
 
@@ -146,7 +144,6 @@ public class BookingMain_step_definition {
 
          */
         adultsAndChildrenAsText = bookingMain_page.adultsAndChildren.getText();
-        System.out.println("adultsAndChildrenAsText = " + adultsAndChildrenAsText);         //Delete this
 
     }
 
@@ -163,13 +160,15 @@ public class BookingMain_step_definition {
                 BrowserUtils.isElementVisible(bookingMain_page.iWillReserve, timeout);
                 break;
             case "i'll reserve":
-                if(BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)){
+                if (BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)) {
                     bookingMain_page.removeFinishYourBooking.click();
                 }
-
                 bookingMain_page.iWillReserve.click();
                 break;
             case "next: final details":
+                if (BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)) {
+                    bookingMain_page.removeFinishYourBooking.click();
+                }
                 bookingMain_page.finalDetails.click();
                 break;
 
@@ -189,19 +188,49 @@ public class BookingMain_step_definition {
     public void pageIsOpenedForSelectedHotel(String hotelDetails) {
         currentWindow1 = Driver.getDriver().getCurrentUrl();
         BrowserUtils.switchToWindowByTitle(Driver.getDriver(), currentWindow1);
+        //Asserting that we are on the page of hotel
         Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains("hotel"));
         Assert.assertTrue(bookingMain_page.hotelName.isDisplayed());
-        Assert.assertEquals(bookingMain_page.destination.getText(),destinationAsText );
-        String actualDate = bookingMain_page.gettingStartingDate+" — "+bookingMain_page.gettingEndingDate;
-        System.out.println("actualDate = " + actualDate);
+
+        //Asserting the value of destination
+        Assert.assertEquals(bookingMain_page.destination.getAttribute("value"), destinationAsText);
+
+        //Asserting the date of reservation
+        String actualDate = BrowserUtils.formatDateString(bookingMain_page.gettingStartingDate.getText().substring(3));
+        actualDate = actualDate.substring(0, actualDate.length() - 5);
+        Assert.assertTrue(datesAsText.contains(actualDate));
+
+        String actual1 = BrowserUtils.formatDateString(bookingMain_page.gettingEndingDate.getText().substring(3));
+        actual1 = actual1.substring(0, actual1.length() - 5);
+        Assert.assertTrue(datesAsText.contains(actual1));
+
+        //Asserting the adult and child reservation
+        String adultAndChild = bookingMain_page.gettingAdultsAndChild.getText();
+        Assert.assertEquals(adultsAndChildrenAsText, adultAndChild);
+
+        //Asserting rating
+        Assert.assertTrue(bookingMain_page.ratting.isDisplayed());
 
     }
 
 
     @Then("{string} page is displayed")
-    public void pageIsDisplayed(String arg0) {
+    public void pageIsDisplayed(String element) {
         //Neew to implement with switch
         //----------------------------------------------------------------------------------
+        switch (element.toLowerCase()) {
+
+            case "checkout":
+
+                break;
+            case "final details":
+
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown element: " + element);
+        }
+
     }
 
     @And("I enter valid booking information")
