@@ -6,9 +6,10 @@ Feature: Creating new account
     When I enter valid user email
     And click on "Continue with email" button
     And I enter valid password
+    #I am failing to create NEW account because website is secure
     And click on "Create account" button
-    #I am failing to create new account because website is secure
-    #Other Steps are implemented correctly
+    #So I am putting this step intentionally so I can verify others
+    And I have account created
     And main page is opened
     And click on "Manage Accounts" button
     And click on "Personal Details" button

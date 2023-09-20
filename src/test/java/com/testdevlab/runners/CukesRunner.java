@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "com.testdevlab.step_definitions",
         dryRun = false,
-        tags = "@bookingFirstHotel",
+        tags = "@Test1",
         publish = true
 )
 

@@ -7,7 +7,7 @@ Feature: Booking Hotels
     And I am in "Home" page
 
 
-  @bookingFirstHotel
+  @Test3
   Scenario Outline: Book first displayed hotel
 
     When I set up destination as "Rome"
@@ -34,7 +34,7 @@ Feature: Booking Hotels
       | firstName | lastName | email                          | description                                                    |
       | Albert    | Shima    | shimabertitestdevlab@gmail.com | Hello Tomas and Ilia. I would like to be part of your team. :) |
 
-  @bookingMostExpensiveHotel
+  @Test4
   Scenario Outline: Book cheapest hotel in city
 
     When I set up destination as "Rome"

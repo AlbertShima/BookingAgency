@@ -8,12 +8,10 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
-import java.util.List;
+
 
 public class Account_Creation_Page_step_definition {
     Account_Creation_Page account_creation_page = new Account_Creation_Page();
@@ -35,7 +33,7 @@ public class Account_Creation_Page_step_definition {
 
     @Then("I enter valid user email")
     public void I_enter_valid_user_email() {
-        account_creation_page.emailAddress.sendKeys(ConfigurationReader.getProperty("email"));
+        account_creation_page.emailAddress.sendKeys(ConfigurationReader.getProperty("newEmail"));
     }
 
     //The method below is for clicking a web element
@@ -48,13 +46,16 @@ public class Account_Creation_Page_step_definition {
                 account_creation_page.continueWithEmail.click();
                 break;
             case "create account":
-                actions.click(account_creation_page.createAccount).perform();
+                //I am skipping this step because of the secure of the web
+                Driver.getDriver().navigate().back();
+                Driver.getDriver().navigate().back();
                 //account_creation_page.createAccount.click();
                 break;
             case "signin with verification link":
                 account_creation_page.signInWithAVerificationLink.click();
                 break;
             case "manage accounts":
+                BrowserUtils.isElementVisible(account_creation_page.profileMenuTriggerTitleYour, timeout);
                 account_creation_page.profileMenuTriggerTitleYour.click();
                 account_creation_page.manageAccount.click();
                 break;
@@ -80,7 +81,8 @@ public class Account_Creation_Page_step_definition {
 
     @And("main page is opened")
     public void mainPageIsOpened() {
-        actions.clickAndHold(account_creation_page.pressAndHold).perform();
+        BrowserUtils.isElementVisible(account_creation_page.profileMenuTriggerTitleYour, timeout);
+        //actions.clickAndHold(account_creation_page.pressAndHold).perform();
         //I am proofing that the logo for the account is displayed after log-in
         Assert.assertTrue(account_creation_page.profileMenuTriggerTitleYour.isDisplayed());
     }

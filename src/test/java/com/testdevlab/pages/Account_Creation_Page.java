@@ -37,7 +37,7 @@ public class Account_Creation_Page {
     @FindBy(xpath = "//span[text()=\"Sign in with a verification link\"]/..")
     public WebElement signInWithAVerificationLink;
 
-    @FindBy(xpath = "//nav[@class=\"c20fd9b542\"]//div[@class=\"a3332d346a a6a383700c\"]")
+    @FindBy(xpath = "//div[@class=\"aca0ade214 a5f1aae5b2 c2931f4182 e7d9f93f4d\"]")
     public WebElement profileMenuTriggerTitleYour; //Profile Menu at the right top
 
     @FindBy(xpath = "//*[text()=\"Manage account\"]")
