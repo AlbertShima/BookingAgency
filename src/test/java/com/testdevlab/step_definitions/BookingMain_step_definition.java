@@ -20,7 +20,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class BookingMain_step_definition {
-    Duration timeout = Duration.ofSeconds(6);
+    Duration timeout = Duration.ofSeconds(7);
     String currentWindowHandle = "";
     String currentWindow1 = "";
     Account_Creation_Page account_creation_page = new Account_Creation_Page();
@@ -138,7 +138,7 @@ public class BookingMain_step_definition {
         }
 
         if (children > 0) {
-            for (int i = 0, j = 3; i < children; i++, j++) {
+            for (int i = 1, j = 3; i < children; i++, j++) {
                 bookingMain_page.childrenPlusButton.click();
                 Select select = new Select(bookingMain_page.selectAgeForChildren);
                 select.selectByIndex(j);
@@ -249,8 +249,8 @@ public class BookingMain_step_definition {
     }
 
 
-    @And("I enter valid booking information {string}, {string}, {string}, {string}")
-    public void iEnterValidBookingInformation(String firstName, String lastName, String email, String description) {
+    @And("I enter valid booking information {string}, {string}, {string}, {string}, {string}")
+    public void iEnterValidBookingInformation(String firstName, String lastName, String email, String description, String phoneNumber) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver.getDriver();
         jsExecutor.executeScript("window.scrollTo(0, 0);");
 
@@ -259,9 +259,10 @@ public class BookingMain_step_definition {
         bookingMain_page.checkOutEmail.click();
         bookingMain_page.checkOutEmail.sendKeys(Keys.CONTROL + "a");
         bookingMain_page.checkOutEmail.sendKeys(email + Keys.DOWN + Keys.ENTER);
-        bookingMain_page.checkOutIAmTheMainGuest.click();
+        bookingMain_page.phoneNumber.sendKeys(phoneNumber);
         bookingMain_page.checkOutYesRadioButton.click();
         bookingMain_page.checkOutDescription.sendKeys(description);
+
 
     }
 

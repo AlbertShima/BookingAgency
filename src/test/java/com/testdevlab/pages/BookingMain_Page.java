@@ -143,6 +143,10 @@ public class BookingMain_Page {
     @FindBy(xpath = "//*[text()=\"Final step\"]")
     public WebElement finalStep;
 
+    @FindBy(xpath = "//input[@name=\"phone\"]")
+    public WebElement phoneNumber;
+
+
 
 
 
