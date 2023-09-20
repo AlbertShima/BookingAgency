@@ -12,10 +12,12 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
+import java.util.List;
 
 public class BookingMain_step_definition {
     Duration timeout = Duration.ofSeconds(6);
@@ -68,6 +70,8 @@ public class BookingMain_step_definition {
     public void iAmInPage(String icon) {
         BrowserUtils.isElementVisible(bookingMain_page.staysIcon, timeout);
         Assert.assertTrue(bookingMain_page.staysIcon.isDisplayed());
+
+        //Here I made a switch to automate which button we have to click
 /*
         switch (icon.toLowerCase()) {
 
@@ -178,8 +182,10 @@ public class BookingMain_step_definition {
                 if (BrowserUtils.isElementVisible(bookingMain_page.removeFinishYourBooking, timeout)) {
                     bookingMain_page.removeFinishYourBooking.click();
                 }
-                Select select = new Select(bookingMain_page.iWillReserveAmount);
-                select.selectByIndex(1);
+                if (BrowserUtils.isElementVisible(bookingMain_page.iWillReserveAmount, timeout)) {
+                    Select select = new Select(bookingMain_page.iWillReserveAmount);
+                    select.selectByIndex(1);
+                }
                 bookingMain_page.iWillReserve.click();
                 break;
             case "next: final details":
@@ -195,8 +201,8 @@ public class BookingMain_step_definition {
 
     }
 
-    @And("I click on {string} for fist hotel in the list")
-    public void iClickOnForFistHotelInTheList(String seeAvailability) {
+    @And("I click on {string} for first hotel in the list")
+    public void iClickOnForFirstHotelInTheList(String seeAvailability) {
         currentWindowHandle = Driver.getDriver().getWindowHandle();
         bookingMain_page.seeAvailability.click();
     }
@@ -214,8 +220,10 @@ public class BookingMain_step_definition {
 
         //Asserting the date of reservation
         String actualDate = BrowserUtils.formatDateString(bookingMain_page.gettingStartingDate.getText().substring(3));
+        System.out.println("actualDate = " + actualDate);
         actualDate = actualDate.substring(0, actualDate.length() - 5);
         Assert.assertTrue(datesAsText.contains(actualDate));
+
 
         String actual1 = BrowserUtils.formatDateString(bookingMain_page.gettingEndingDate.getText().substring(3));
         actual1 = actual1.substring(0, actual1.length() - 5);
@@ -226,14 +234,7 @@ public class BookingMain_step_definition {
         Assert.assertEquals("Added adults and children number does not match with expected one", adultsAndChildrenAsText, adultAndChild);
 
         //Asserting rating
-        try {
-            Assert.assertTrue(bookingMain_page.ratting.isDisplayed());
-        } catch (org.openqa.selenium.TimeoutException e) {
-            // Handle the exception or print an error message
-            System.out.println("Exception: Element not displayed within the timeout.");
-            // You can also fail the test here if needed
-            Assert.fail("The rating WebElement is not displayed.");
-        }
+        Assert.assertTrue(bookingMain_page.firstDivContainsRating.isDisplayed());
 
     }
 
@@ -248,7 +249,7 @@ public class BookingMain_step_definition {
                 Assert.assertTrue(bookingMain_page.checkOutTotal.isDisplayed());
                 break;
             case "final details":
-
+                Assert.assertTrue(bookingMain_page.finalStep.isDisplayed());
                 break;
 
             default:
@@ -263,14 +264,67 @@ public class BookingMain_step_definition {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver.getDriver();
         jsExecutor.executeScript("window.scrollTo(0, 0);");
 
-        //bookingMain_page.checkOutIAmTheMainGuest.click();
         bookingMain_page.checkOutFirstName.sendKeys(firstName);
         bookingMain_page.checkOutLastName.sendKeys(lastName);
-        bookingMain_page.checkOutEmail.sendKeys(email);
-        bookingMain_page.checkOutEmailFirstOption.click();
-        BrowserUtils.scrollToElement(Driver.getDriver(), bookingMain_page.checkOutDescription);
+        bookingMain_page.checkOutEmail.sendKeys(email + Keys.DOWN + Keys.ENTER);
         bookingMain_page.checkOutYesRadioButton.click();
         bookingMain_page.checkOutDescription.sendKeys(description);
 
+    }
+
+    @And("I click on {string} for the cheapest hotel in the list with a rating above {int} stars")
+    public void iClickOnForTheCheapestHotelInTheListWithARatingAboveStars(String seeAvailability, int nrOfStars) {
+        currentWindowHandle = Driver.getDriver().getWindowHandle();
+        bookingMain_page.seeAvailability.click();
+
+        /*
+        List<WebElement> listRatingSquares = Driver.getDriver().findElements(By.xpath("//div[@data-testid=\"rating-squares\"]"));
+        List<WebElement> listRatingStars = Driver.getDriver().findElements(By.xpath("//div[@data-testid=\"rating-stars\"]"));
+        List<WebElement> listOfPrices = Driver.getDriver().findElements(By.xpath("//span[@data-testid=\"price-and-discounted-price\"]"));
+
+        if (listRatingSquares.size() == listRatingStars.size() && listRatingStars.size() == listOfPrices.size()) {
+            double lowestPrice = Double.MAX_VALUE; // Initialize with a very high value
+            String lowestPriceRating = "";
+            int ratingSquaresCount = 0;
+            int ratingStarsCount = 0;
+
+            for (int i = 0; i < listRatingSquares.size(); i++) {
+                WebElement ratingSquare = listRatingSquares.get(i);
+                WebElement ratingStar = listRatingStars.get(i);
+                WebElement price = listOfPrices.get(i);
+
+                WebElement parentDivSquare = ratingSquare.findElement(By.xpath("./parent::div"));
+                WebElement parentDivStar = ratingStar.findElement(By.xpath("./parent::div"));
+                WebElement parentDivPrice = price.findElement(By.xpath("./parent::div"));
+
+                // Check if the parent div of rating squares is the same as the parent div of rating stars and prices
+                if (parentDivSquare.equals(parentDivStar) && parentDivSquare.equals(parentDivPrice)) {
+                    String priceText = price.getText();
+                    // Extract the numeric part from the price text
+                    String numericPart = priceText.replaceAll("[^0-9,]", "");
+                    // Remove commas and convert to a double
+                    double priceValue = Double.parseDouble(numericPart.replaceAll(",", ""));
+
+                    if (priceValue < lowestPrice) {
+                        lowestPrice = priceValue;
+                        lowestPriceRating = ratingSquare.getText(); // You can choose either ratingSquare or ratingStar, as they should be the same.
+                    }
+
+                    // Count the number of rating spans in rating squares and rating stars
+                    ratingSquaresCount += ratingSquare.findElements(By.tagName("span")).size();
+                    ratingStarsCount += ratingStar.findElements(By.tagName("span")).size();
+                }
+            }
+
+            if (ratingSquaresCount >= nrOfStars && ratingStarsCount >= nrOfStars) {
+                System.out.println("The lowest price with a rating of 3 or above is: " + lowestPrice + " with a rating of " + lowestPriceRating);
+            } else {
+                System.out.println("No item found with a rating of 3 or above.");
+            }
+        } else {
+            System.out.println("The sizes of the lists do not match.");
+        }
+
+ */
     }
 }

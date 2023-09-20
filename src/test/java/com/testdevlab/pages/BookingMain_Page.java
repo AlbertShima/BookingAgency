@@ -74,10 +74,6 @@ public class BookingMain_Page {
     @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 e91c91fa93\"])[3]")
     public WebElement roomMinusButton;
 
-
-    @FindBy(xpath = "//select[@name=\"age\"]")
-    public WebElement childrenAgeSelect;
-
     @FindBy(xpath = "//select[@name=\"age\"]")
     public WebElement selectAgeForChildren;
 
@@ -114,12 +110,11 @@ public class BookingMain_Page {
     @FindBy(xpath = "(//button[@data-testid=\"occupancy-config\"])[1]")
     public WebElement gettingAdultsAndChild;
 
-    @FindBy(xpath = "//span[@class=\"f419a93f12 c7b191f510\"]")
-    public WebElement ratting;
+    @FindBy(xpath = "(//div[contains(@data-testid, \"rating\")])[1]")
+    public WebElement firstDivContainsRating;
 
     @FindBy(xpath = "//div[@class=\"bp-price-details__total-price\"]")
     public WebElement checkOutTotal;
-
 
     @FindBy(xpath = "//span[@class=\"bui-radio__label\"]")
     public WebElement checkOutYesRadioButton;
@@ -136,9 +131,6 @@ public class BookingMain_Page {
     @FindBy(id = "email")
     public WebElement checkOutEmail;
 
-    @FindBy(xpath = "(//li[@role=\"option\"])[1]")
-    public WebElement checkOutEmailFirstOption;
-
     @FindBy(id = "notstayer_false")
     public WebElement checkOutIAmTheMainGuest;
 
@@ -147,6 +139,9 @@ public class BookingMain_Page {
 
     @FindBy(id = "remarks")
     public WebElement checkOutDescription;
+
+    @FindBy(xpath = "//*[text()=\"Final step\"]")
+    public WebElement finalStep;
 
 
 
