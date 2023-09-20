@@ -94,5 +94,25 @@ public class BrowserUtils {
         }
     }
 
+    public static void switchWindow(int windowIndex) {
+        Set<String> windowHandles = Driver.getDriver().getWindowHandles();
+        int totalWindows = windowHandles.size();
+
+        if (totalWindows < 2) {
+            System.out.println("There are not enough windows to switch.");
+            return;
+        }
+
+        if (windowIndex == 0) {
+            String parentWindowHandle = (String) windowHandles.toArray()[0];
+            Driver.getDriver().switchTo().window(parentWindowHandle);
+        } else if (windowIndex == 1) {
+            String currentWindowHandle = (String) windowHandles.toArray()[totalWindows - 1];
+            Driver.getDriver().switchTo().window(currentWindowHandle);
+        } else {
+            System.out.println("Invalid window index. Use 0 for the parent window or 1 for the current window.");
+        }
+    }
+
 
 }

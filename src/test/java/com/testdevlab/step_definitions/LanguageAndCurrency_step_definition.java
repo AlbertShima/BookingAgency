@@ -32,6 +32,7 @@ public class LanguageAndCurrency_step_definition {
         String lang = languageAndCurrency_page.createXPathLocatorWithText(language);
         WebElement languageLocator = Driver.getDriver().findElement(By.xpath(lang));
         languageLocator.click();
+
         //Assertion
         String actualLanguage = languageAndCurrency_page.language.getAttribute("aria-label");
         Assert.assertTrue(actualLanguage.contains(language));

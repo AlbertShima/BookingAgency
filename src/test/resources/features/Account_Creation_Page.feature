@@ -1,6 +1,6 @@
 Feature: Creating new account
 
-  @Test1
+  @Test2
   Scenario: Creating an account for the new user
     Given I am in a Sign Up page
     When I enter valid user email

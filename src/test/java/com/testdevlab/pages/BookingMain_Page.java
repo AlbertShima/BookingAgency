@@ -92,7 +92,7 @@ public class BookingMain_Page {
     @FindBy(xpath = "//div[@class=\"hprt-reservation-cta\"]/button")
     public WebElement iWillReserve;
 
-    @FindBy(id = "hprt_nos_select_157343803_88492392_2_1_0")
+    @FindBy(xpath = "//select[@data-testid=\"select-room-trigger\"]")
     public WebElement iWillReserveAmount;
 
     @FindBy(xpath = "//div[@class=\"notice-item-close-x\"]")
