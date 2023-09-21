@@ -1,6 +1,5 @@
 package com.testdevlab.utilities;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -43,14 +42,10 @@ public class Driver {
             */
             switch (browserType) {
                 case "chrome":
-                    System.setProperty("webdriver.chrome.driver", "C:\\Users\\User\\Downloads\\chrome-win64\\chromedriver.exe"); // Specify the path to chromedriver.exe
                     ChromeOptions options = new ChromeOptions();
-                    options.setBinary("C:\\Users\\User\\Downloads\\chrome-win64\\chrome.exe"); // Specify the path to the Chrome browser executable
-                    //WebDriverManager.chromedriver().setup();
                     driverPool.set(new ChromeDriver(options));
                     break;
                 case "firefox":
-                    WebDriverManager.firefoxdriver().setup();
                     FirefoxOptions option = new FirefoxOptions();
                     driverPool.set(new FirefoxDriver(option));
                     break;

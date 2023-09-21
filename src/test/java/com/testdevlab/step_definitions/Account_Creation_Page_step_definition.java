@@ -38,7 +38,7 @@ public class Account_Creation_Page_step_definition {
 
     //The method below is for clicking a web element
     @Then("click on {string} button")
-    public void user_click_on_button(String webElement) {
+    public void user_click_on_button(String webElement) throws InterruptedException {
 
         switch (webElement.toLowerCase()) {
 
@@ -47,9 +47,11 @@ public class Account_Creation_Page_step_definition {
                 break;
             case "create account":
                 //I am skipping this step because of the secure of the web
-                Driver.getDriver().navigate().back();
-                Driver.getDriver().navigate().back();
                 //account_creation_page.createAccount.click();
+                Driver.getDriver().navigate().back();
+                Driver.getDriver().navigate().back();
+                Thread.sleep(10);
+
                 break;
             case "signin with verification link":
                 account_creation_page.signInWithAVerificationLink.click();
