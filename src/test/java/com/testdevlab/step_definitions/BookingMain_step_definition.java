@@ -98,7 +98,7 @@ public class BookingMain_step_definition {
             bookingMain_page.destination.click();
             bookingMain_page.destination.sendKeys(Keys.CONTROL + "a");
             bookingMain_page.destination.sendKeys(Keys.BACK_SPACE);
-            bookingMain_page.destination.sendKeys(destination+Keys.DOWN+Keys.ENTER);
+            bookingMain_page.destination.sendKeys(destination + Keys.DOWN + Keys.ENTER);
             destinationAsText = bookingMain_page.destination.getAttribute("value");
         }
 
@@ -139,9 +139,11 @@ public class BookingMain_step_definition {
 
         if (children > 0) {
             for (int i = 1, j = 3; i < children; i++, j++) {
+                String xpathForSelectingAgeOfChildren = "(//select[@name=\"age\"])["+i+"]";
                 bookingMain_page.childrenPlusButton.click();
-                Select select = new Select(bookingMain_page.selectAgeForChildren);
+                Select select = new Select(Driver.getDriver().findElement(By.xpath(xpathForSelectingAgeOfChildren)));
                 select.selectByIndex(j);
+                BrowserUtils.isElementVisible(bookingMain_page.childrenPlusButton, timeout);
             }
         }
         int people = adults + children;
@@ -259,7 +261,7 @@ public class BookingMain_step_definition {
         bookingMain_page.checkOutEmail.click();
         bookingMain_page.checkOutEmail.sendKeys(Keys.CONTROL + "a");
         bookingMain_page.checkOutEmail.sendKeys(email + Keys.DOWN + Keys.ENTER);
-        if(BrowserUtils.isElementVisible(bookingMain_page.phoneNumber, timeout)){
+        if (BrowserUtils.isElementVisible(bookingMain_page.phoneNumber, timeout)) {
             bookingMain_page.phoneNumber.sendKeys(phoneNumber);
         }
         bookingMain_page.checkOutYesRadioButton.click();
