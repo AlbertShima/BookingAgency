@@ -26,13 +26,13 @@ Feature: Booking Hotels
       # verify that dates are correct, check if price matches the price in details page,
       # reservation time counter is decreasing, check other information based on previous
       # inputs (amount of adults, etc.)
-    And I enter valid booking information "<firstName>", "<lastName>", "<email>", "<description>"
+    And I enter valid booking information "<firstName>", "<lastName>", "<email>", "<description>", "<phone>"
     And I click on "Next: Final Details" button
     And "Final Details" page is displayed
 
     Examples:
-      | firstName | lastName | email                          | description                                                    |
-      | Albert    | Shima    | shimabertitestdevlab@gmail.com | Hello Tomas and Ilia. I would like to be part of your team. :) |
+      | firstName | lastName | email                          | description                                                    | phone   |
+      | Albert    | Shima    | shimabertitestdevlab@gmail.com | Hello Tomas and Ilia. I would like to be part of your team. :) | 2334342 |
 
   @Test4
   Scenario Outline: Book cheapest hotel in city
