@@ -11,9 +11,9 @@ Feature: Booking Hotels
   Scenario Outline: Book first displayed hotel
 
     When I set up destination as "Rome"
-    And I set dates "30-09-2023" - "20-10-2023"
+    And I set dates "28-09-2023" - "21-10-2023"
     #For every two people added I will increase the number of rooms by 1
-    And I select 2 adults and 2 children
+    And I select 3 adults and 1 children
     And I click on "Search" button
     And I click on "See availability" for first hotel in the list
     And "Hotel Details" page is opened for selected hotel
@@ -32,7 +32,7 @@ Feature: Booking Hotels
 
     Examples:
       | firstName | lastName | email                          | description                                                    | phone   |
-      | Albert    | Shima    | shimabertitestdevlab@gmail.com | Hello Tomas and Ilia. I would like to be part of your team. :) | 2334342 |
+      | Albert    | Shima    | shimabertitestdevlab@gmail.com | Hello Tomas and Ilja. I would like to be part of your team. :) | 2334342 |
 
   @Test4
   Scenario Outline: Book cheapest hotel in city
