@@ -96,6 +96,14 @@ public class BrowserUtils {
             System.out.println("Invalid window index. Use 0 for the parent window or 1 for the current window.");
         }
     }
+    public static void clickElementWithJavaScript(WebDriver driver, WebElement element) {
+        try {
+            JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+            jsExecutor.executeScript("arguments[0].click();", element);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

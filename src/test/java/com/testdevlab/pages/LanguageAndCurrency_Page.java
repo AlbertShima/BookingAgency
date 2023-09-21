@@ -19,4 +19,5 @@ public class LanguageAndCurrency_Page {
     public String createXPathLocatorWithText(String text) {
         return "(//*[contains(text(), '" + text + "')])[2]";
     }
+
 }

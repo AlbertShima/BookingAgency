@@ -57,6 +57,15 @@ public class BookingMain_Page {
     @FindBy(id = "group_adults")
     public WebElement adults;
 
+    @FindBy(xpath = "(//span[@class=\"d723d73d5f\"])[1]")
+    public WebElement numberOfAdults;
+
+    @FindBy(xpath = "(//span[@class=\"d723d73d5f\"])[2]")
+    public WebElement numberOfChildren;
+
+    @FindBy(xpath = "(//span[@class=\"d723d73d5f\"])[3]")
+    public WebElement numberOfRooms;
+
     @FindBy(xpath = "(//button[@class=\"a83ed08757 c21c56c305 f38b6daa18 d691166b09 ab98298258 deab83296e bb803d8689 e91c91fa93\"])[1]")
     public WebElement adultsMinusButton;
 

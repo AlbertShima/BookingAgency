@@ -19,6 +19,6 @@ public class Hooks {
             scenario.attach(screenShot, "image/png", scenario.getName());
         }
         //Closing the driver after each season is done
-        Driver.closeDriver();
+        //Driver.closeDriver();
     }
 }

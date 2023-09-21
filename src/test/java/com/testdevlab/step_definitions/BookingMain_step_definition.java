@@ -126,7 +126,7 @@ public class BookingMain_step_definition {
     @And("I select {int} adults and {int} children")
     public void iSelectAdultsAndChildren(int adults, int children) {
         bookingMain_page.adultsAndChildren.click();
-        int numberOfClicking = adults - 2;
+        int numberOfClicking = adults - Integer.parseInt(bookingMain_page.numberOfAdults.getText());
         if (numberOfClicking > 0) {
             for (int i = 0; i < numberOfClicking; i++) {
                 bookingMain_page.adultsPlusButton.click();
@@ -137,22 +137,39 @@ public class BookingMain_step_definition {
             }
         }
 
-        if (children > 0) {
-            for (int i = 1, j = 3; i < children; i++, j++) {
-                String xpathForSelectingAgeOfChildren = "(//select[@name=\"age\"])["+i+"]";
+
+        int numberOfClickingChildren = children - Integer.parseInt(bookingMain_page.numberOfChildren.getText());
+        if (numberOfClickingChildren > 0) {
+            for (int i = 0, j = 3; i < numberOfClickingChildren; i++, j++) {
                 bookingMain_page.childrenPlusButton.click();
-                Select select = new Select(Driver.getDriver().findElement(By.xpath(xpathForSelectingAgeOfChildren)));
-                select.selectByIndex(j);
-                BrowserUtils.isElementVisible(bookingMain_page.childrenPlusButton, timeout);
+            }
+            for (int i = 0; i < numberOfClickingChildren; i++) {
+                String xpathForSelectingAgeOfChildren = "(//select[@name=\"age\"])[" + (i + 1) + "]";
+                WebElement selectAges = Driver.getDriver().findElement(By.xpath(xpathForSelectingAgeOfChildren));
+                selectAges.click();
+                Select select = new Select(selectAges);
+                select.selectByIndex(i + 3);
+            }
+
+        } else if (numberOfClickingChildren < 0) {
+            for (int i = 1, j = 3; i < Math.abs(numberOfClickingChildren); i++, j++) {
+                bookingMain_page.childrenMinusButton.click();
+            }
+            for (int i = 0; i < Math.abs(numberOfClickingChildren); i++) {
+                String xpathForSelectingAgeOfChildren = "(//select[@name=\"age\"])[" + (i + 1) + "]";
+                WebElement selectAges = Driver.getDriver().findElement(By.xpath(xpathForSelectingAgeOfChildren));
+                selectAges.click();
+                Select select = new Select(selectAges);
+                select.selectByIndex(i + 3);
             }
         }
+
         int people = adults + children;
-        int loop = people / 2 - 1;
+        int loop = people / 2 - Integer.parseInt(bookingMain_page.numberOfRooms.getText());
         bookingMain_page.adultsAndChildren.click();
         if (people > 3) {
             for (int i = 0; i < loop; i++) {
-                JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver.getDriver();
-                jsExecutor.executeScript("arguments[0].click();", bookingMain_page.roomPlusButton);
+                BrowserUtils.clickElementWithJavaScript(Driver.getDriver(), bookingMain_page.roomPlusButton);
             }
         }
         adultsAndChildrenAsText = bookingMain_page.adultsAndChildren.getText();
