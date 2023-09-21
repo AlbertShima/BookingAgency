@@ -259,7 +259,9 @@ public class BookingMain_step_definition {
         bookingMain_page.checkOutEmail.click();
         bookingMain_page.checkOutEmail.sendKeys(Keys.CONTROL + "a");
         bookingMain_page.checkOutEmail.sendKeys(email + Keys.DOWN + Keys.ENTER);
-        bookingMain_page.phoneNumber.sendKeys(phoneNumber);
+        if(BrowserUtils.isElementVisible(bookingMain_page.phoneNumber, timeout)){
+            bookingMain_page.phoneNumber.sendKeys(phoneNumber);
+        }
         bookingMain_page.checkOutYesRadioButton.click();
         bookingMain_page.checkOutDescription.sendKeys(description);
 
