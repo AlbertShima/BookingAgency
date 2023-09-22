@@ -92,22 +92,28 @@ public class BookingMain_step_definition {
 
     @When("I set up destination as {string}")
     public void iSetUpDestinationAs(String destination) {
+        System.out.println("destination = " + destination);
 
-        if (BrowserUtils.isElementVisible(bookingMain_page.destination, timeout)) {
+        BrowserUtils.isElementVisible(bookingMain_page.destination, timeout);
+        if (bookingMain_page.destination.getText().isBlank()) {
+            bookingMain_page.destination.click();
+            bookingMain_page.destination.sendKeys(destination);
+        } else {
             //Clear destination text
             bookingMain_page.destination.click();
             bookingMain_page.destination.sendKeys(Keys.CONTROL + "a");
             bookingMain_page.destination.sendKeys(Keys.BACK_SPACE);
-            bookingMain_page.destination.sendKeys(destination + Keys.DOWN + Keys.ENTER);
-            destinationAsText = bookingMain_page.destination.getAttribute("value");
+            bookingMain_page.destination.sendKeys(destination);
+            bookingMain_page.destination.sendKeys(Keys.DOWN, Keys.ENTER);
         }
+        destinationAsText = bookingMain_page.destination.getAttribute("value");
+
 
     }
 
     @And("I set dates {string} - {string}")
     public void iSetDates(String startingDate, String endingDate) {
-
-        bookingMain_page.dateReservation.click();
+        BrowserUtils.clickElementWithJavaScript(Driver.getDriver(), bookingMain_page.dateReservation);
         String start = BrowserUtils.modifyAndReturn(startingDate);
         String end = BrowserUtils.modifyAndReturn(endingDate);
 
@@ -289,39 +295,38 @@ public class BookingMain_step_definition {
 
     @And("I click on {string} for the cheapest hotel in the list with a rating above {int} stars")
     public void iClickOnForTheCheapestHotelInTheListWithARatingAboveStars(String seeAvailability, int nrOfStars) {
+        // Find all the elements using your XPath expression
+        List<WebElement> elements = Driver.getDriver().findElements(By.xpath("//div[@data-testid=\"property-card\"]"));
 
         int minPrice = Integer.MAX_VALUE;
-        int indexOfMinPrice = 0;
-        int price = 0;
+        WebElement selectedElement = null;
 
-        List<WebElement> divContainingRatingAndPrice = Driver.getDriver().findElements(By.xpath("//div[@data-testid=\"property-card\"]"));
-        for (int i = 1; i < divContainingRatingAndPrice.size(); i++) {
-            String xpathListOfPrices = "(//span[@data-testid=\"price-and-discounted-price\"])[" + i + "]";
-            WebElement listOfPrices = divContainingRatingAndPrice.get(i).findElement(By.xpath(xpathListOfPrices));
+        // Iterate through each WebElement
+        for (WebElement element : elements) {
+            // Check if the div contains either listRatingStars or listRatingSquares
 
-            for (int j = 1; j < divContainingRatingAndPrice.get(1).findElements(By.xpath("//div[@data-testid=\"rating-squares\"]")).size(); j++) {
-                String xpathListRatingSquares = "(//div[@data-testid=\"rating-squares\"])[" + j + "]";
-                WebElement listRatingSquares = divContainingRatingAndPrice.get(i).findElement(By.xpath(xpathListRatingSquares));
-                boolean ratingCountSquares = listRatingSquares.findElements(By.tagName("span")).size() >= nrOfStars;
+            boolean containsRating = element.findElements(By.xpath(".//div[@data-testid=\"rating-squares\"] | .//div[@data-testid=\"rating-stars\"]")).size() > 0;
 
-                for (int k = 1; k < divContainingRatingAndPrice.get(1).findElements(By.xpath("//div[@data-testid=\"rating-stars\"]")).size(); k++) {
-                    String xpathListRatingStars = "(//div[@data-testid=\"rating-stars\"])[" + k + "]";
-                    WebElement listRatingStars = divContainingRatingAndPrice.get(i).findElement(By.xpath(xpathListRatingStars));
-                    boolean ratingCountStars = listRatingStars.findElements(By.tagName("span")).size() >= nrOfStars;
+            // Count the number of spans inside listRatingSquares and listRatingStars
+            int numberOfSquares = element.findElements(By.xpath(".//div[@data-testid=\"rating-squares\"]/span")).size();
+            int numberOfStars = element.findElements(By.xpath(".//div[@data-testid=\"rating-stars\"]/span")).size();
 
-                    String priceText = listOfPrices.getText().replaceAll("[^0-9]+", "");
-                    price = Integer.parseInt(priceText);
+            WebElement listOfPrices = element.findElement(By.xpath("//span[@data-testid=\"price-and-discounted-price\"]"));
+            String priceText = listOfPrices.getText().replaceAll("[^0-9]+", "");
+            int price = Integer.parseInt(priceText);
 
-                    if ((ratingCountSquares || ratingCountStars) && (price < minPrice)) {
-                        minPrice = price;
-                        indexOfMinPrice++;
-                    }
-                }
+            // Check if the div contains at least 3 listRatingSquares or listRatingStars
+            if (containsRating && (numberOfSquares >= nrOfStars || numberOfStars >= nrOfStars) && price < minPrice) {
+                minPrice = price;
+                selectedElement = element;
             }
         }
 
-        divContainingRatingAndPrice.get(indexOfMinPrice).findElement(By.xpath("//div[@data-testid=\"title\"]")).click();
-        System.out.println("minPrice = " + minPrice);
+        if (selectedElement != null) {
+            // Click the selected div
+            selectedElement.findElement(By.xpath(".//div[@data-testid=\"title\"]")).click();
+            System.out.println("Minimum Price: " + minPrice);
+        }
     }
 
     @And("I click on {string} button for the most expensive available room in the hotel")

@@ -4,3 +4,4 @@ Feature: Language & Currency
     Given I choose the "English (UK)" language
     And "Dollar" as the currency
 
+
