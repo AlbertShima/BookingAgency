@@ -92,7 +92,6 @@ public class BookingMain_step_definition {
 
     @When("I set up destination as {string}")
     public void iSetUpDestinationAs(String destination) {
-        System.out.println("destination = " + destination);
 
         BrowserUtils.isElementVisible(bookingMain_page.destination, timeout);
         if (bookingMain_page.destination.getText().isBlank()) {
@@ -173,9 +172,13 @@ public class BookingMain_step_definition {
         int people = adults + children;
         int loop = people / 2 - Integer.parseInt(bookingMain_page.numberOfRooms.getText());
         bookingMain_page.adultsAndChildren.click();
-        if (people > 3) {
+        if (loop > 0) {
             for (int i = 0; i < loop; i++) {
                 BrowserUtils.clickElementWithJavaScript(Driver.getDriver(), bookingMain_page.roomPlusButton);
+            }
+        } else if (loop < 0) {
+            for (int i = 0; i < Math.abs(loop); i++) {
+                BrowserUtils.clickElementWithJavaScript(Driver.getDriver(), bookingMain_page.roomMinusButton);
             }
         }
         adultsAndChildrenAsText = bookingMain_page.adultsAndChildren.getText();
